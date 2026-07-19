@@ -1,17 +1,20 @@
 const express = require('express');
 const nodemailer = require('nodemailer');
+const cors = require('cors'); // 1. CORS ko yahan require kiya
+
 const app = express();
 
+app.use(cors()); // 2. CORS ko yahan enable kiya taake browser request block na kare
 app.use(express.json());
 
 const otpDatabase = {}; 
 
-// Gmail configuration (Aapka password yahan pehle se add hai)
+// Gmail configuration
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: 'hmahworkspace@gmail.com', // ⚠️ Idhar apni asli Gmail ID likhein
-    pass: 'qnrw xiwd clbx elys'        // Aapka pehle wala password
+    user: 'hmahworkspace@gmail.com', 
+    pass: 'qnrw xiwd clbx elys'        
   }
 });
 
@@ -28,7 +31,7 @@ app.post('/api/send-otp', (req, res) => {
   };
 
   const mailOptions = {
-    from: 'hmahworkspace@gmail.com', // ⚠️ Idhar bhi apni asli Gmail ID likhein
+    from: 'hmahworkspace@gmail.com', 
     to: email,
     subject: 'App Login OTP Code',
     text: `Aapka verification code hai: ${generatedOtp}. Ye sirf 5 mins ke liye valid hai.`
